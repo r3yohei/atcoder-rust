@@ -12,21 +12,18 @@ input!{
 // 隣接リスト表現
 let mut edges = vec![vec![]; n];
 for i in 0..m {
-    let mut a = ab[i].0;
-    let mut b = ab[i].1;
-    a -= 1;
-    b -= 1;
-    edges[a].push(b);
-    edges[b].push(a);
+    let (a, b) = ab[i];
+    edges[a-1].push(b-1);
+    edges[b-1].push(a-1);
 }
 
 // 頂点0を視点とするBFS
 let mut deque = VecDeque::new();
-deque.push_front(0_usize);
+deque.push_back(0_usize);
 let mut dist = vec![-1; n]; // -1は未訪問を示す
 // 頂点0から各頂点への最短距離を格納するベクタ
 dist[0] = 0; // 始点自身への距離は0
-while deque.len() > 0 {
+while !deque.is_empty() {
     let frm = deque.pop_front().unwrap();
     for &to in &edges[frm] {
         if dist[to] == -1 {
